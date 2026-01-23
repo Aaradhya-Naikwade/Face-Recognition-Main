@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card center">
+    <h1>Face Recognition System</h1>
+    <p class="subtitle">
+        Upload faces and search across your image database using AI.
+    </p>
+
+    <div class="action-grid">
+        <a href="/ui/add-face" class="action-box">
+            ➕<br>
+            <strong>Add Face</strong>
+            <span>Upload images of a person</span>
+        </a>
+
+        <a href="/ui/search" class="action-box">
+            🔍<br>
+            <strong>Search Face</strong>
+            <span>Find matching images</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

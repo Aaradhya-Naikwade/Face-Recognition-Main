@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Search Face</h2>
+    <p class="subtitle">Upload an image to find matching faces</p>
+
+    <form action="/ui/search" method="post" enctype="multipart/form-data" class="form">
+        <input type="file" name="file" accept="image/*" required onchange="previewImage(event)">
+        <button class="btn primary" type="submit">Search</button>
+    </form>
+
+    <div id="preview-box" class="preview hidden">
+        <p>Search Image</p>
+        <img id="preview-img">
+    </div>
+</div>
+
+{% if results %}
+<h3 class="section-title">Matched Results</h3>
+
+{% for event, images in results.items() %}
+<div class="card">
+    <h4>Person / Event: {{ event }}</h4>
+
+    <div class="grid">
+        {% for img in images %}
+        <div class="image-card">
+            <img src="{{ img['image_url'] }}" alt="Matched face">
+            <span class="distance">
+                Distance: {{ "%.2f"|format(img["distance"]) }}
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<script>
+function previewImage(event) {
+    const img = document.getElementById("preview-img");
+    const box = document.getElementById("preview-box");
+    img.src = URL.createObjectURL(event.target.files[0]);
+    box.classList.remove("hidden");
+}
+</script>
+{% endblock %}

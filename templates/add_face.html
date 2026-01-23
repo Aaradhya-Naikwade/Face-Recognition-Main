@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Add Face</h2>
+    <p class="subtitle">Upload a face image for a person or event</p>
+
+    <form action="/add-face" method="post" enctype="multipart/form-data" class="form">
+        <label>Person / Event ID</label>
+        <input type="text" name="event_id" placeholder="e.g. john_doe" required>
+
+        <label>Select Image</label>
+        <input type="file" name="file" accept="image/*" required onchange="previewImage(event)">
+
+        <div id="preview-box" class="preview hidden">
+            <p>Preview</p>
+            <img id="preview-img">
+        </div>
+
+        <button class="btn primary" type="submit">Upload Face</button>
+    </form>
+</div>
+
+<script>
+function previewImage(event) {
+    const img = document.getElementById("preview-img");
+    const box = document.getElementById("preview-box");
+    img.src = URL.createObjectURL(event.target.files[0]);
+    box.classList.remove("hidden");
+}
+</script>
+{% endblock %}

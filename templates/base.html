@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title or "Face Recognition System" }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="nav-left">
+        🧠 FaceRec
+    </div>
+    <nav class="nav-right">
+        <a href="/">Home</a>
+        <a href="/ui/add-face">Add Face</a>
+        <a href="/ui/search">Search Face</a>
+    </nav>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    Face Recognition Demo · Python + FastAPI
+</footer>
+
+</body>
+</html>
