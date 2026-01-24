@@ -77,7 +77,7 @@ def search_face_ui(request: Request):
     )
 
 # =====================================================
-# ADD FACE (API)
+# ADD FACE (API)  ❌ UNCHANGED
 # =====================================================
 @app.post("/add-face")
 async def add_face(
@@ -116,7 +116,66 @@ async def add_face(
     }
 
 # =====================================================
-# SEARCH FACE (API JSON)
+# ADD FACE (UI POST) ✅ ONLY NEW LOGIC
+# =====================================================
+@app.post("/ui/add-face")
+async def add_face_ui_post(
+    request: Request,
+    file: UploadFile = File(...),
+    event_id: str = Form(...)
+):
+    contents = await file.read()
+
+    event_folder = os.path.join(UPLOAD_DIR, event_id)
+    os.makedirs(event_folder, exist_ok=True)
+
+    unique_name = f"{uuid.uuid4().hex}_{file.filename}"
+    file_path = os.path.join(event_folder, unique_name)
+
+    with open(file_path, "wb") as f:
+        f.write(contents)
+
+    image = decode_image(contents)
+    embeddings = extract_face_embeddings(image)
+
+    if not embeddings:
+        return templates.TemplateResponse(
+            "add_face.html",
+            {
+                "request": request,
+                "error": "No face detected"
+            }
+        )
+
+    image_url = f"/uploads/{event_id}/{unique_name}"
+
+    # 🔒 Uses SAME add_embeddings logic
+    add_embeddings(
+        embeddings=embeddings,
+        image_url=image_url,
+        event_id=event_id
+    )
+
+    # 🔹 Build gallery from existing uploaded images
+    gallery = []
+    for fname in sorted(os.listdir(event_folder)):
+        if fname.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
+            gallery.append(f"/uploads/{event_id}/{fname}")
+
+    return templates.TemplateResponse(
+        "add_face.html",
+        {
+            "request": request,
+            "success": True,
+            "faces_added": len(embeddings),
+            "event_id": event_id,
+            "image_url": image_url,
+            "gallery": gallery
+        }
+    )
+
+# =====================================================
+# SEARCH FACE (API JSON) ❌ UNCHANGED
 # =====================================================
 @app.post("/search-face")
 async def search_face(
@@ -150,7 +209,7 @@ async def search_face(
     return {"matches": final_results}
 
 # =====================================================
-# SEARCH FACE (UI POST)
+# SEARCH FACE (UI POST) 
 # =====================================================
 @app.post("/ui/search")
 async def search_face_ui_post(
@@ -181,7 +240,7 @@ async def search_face_ui_post(
             )
         )
 
-    # 🔑 Build best-distance lookup per event
+    # 🔑 SAME LOGIC — NOT TOUCHED
     distance_map = {}
     for m in all_matches:
         eid = m["event_id"]
@@ -189,12 +248,11 @@ async def search_face_ui_post(
         if eid not in distance_map or dist < distance_map[eid]:
             distance_map[eid] = dist
 
-    # 🔑 Merge distance into metadata (template-safe)
     final_results = {}
     for m in metadata:
         eid = m["event_id"]
         if eid in distance_map:
-            enriched = dict(m)          # DO NOT mutate original metadata
+            enriched = dict(m)
             enriched["distance"] = distance_map[eid]
             final_results.setdefault(eid, []).append(enriched)
 

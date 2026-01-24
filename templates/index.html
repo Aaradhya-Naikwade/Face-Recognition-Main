@@ -1,24 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card center">
-    <h1>Face Recognition System</h1>
-    <p class="subtitle">
-        Upload faces and search across your image database using AI.
-    </p>
 
-    <div class="action-grid">
-        <a href="/ui/add-face" class="action-box">
-            ➕<br>
-            <strong>Add Face</strong>
-            <span>Upload images of a person</span>
-        </a>
+<section class="hero">
+    <div class="hero-content">
+        <h1>Face Recognition Platform</h1>
 
-        <a href="/ui/search" class="action-box">
-            🔍<br>
-            <strong>Search Face</strong>
-            <span>Find matching images</span>
-        </a>
+        <p class="subtitle">
+            AI-powered face detection and image search system by
+            <strong>WebDesire</strong>
+        </p>
+
+        <div class="hero-actions">
+            <a href="/ui/add-face" class="btn primary">Add Faces</a>
+            <a href="/ui/search" class="btn outline">Search Faces</a>
+        </div>
     </div>
-</div>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>Multi-Face Detection</h3>
+        <p>Detect and index multiple faces from a single image automatically.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Fast AI Search</h3>
+        <p>High-performance FAISS-powered face similarity search.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure & Private</h3>
+        <p>Your images stay securely within your system.</p>
+    </div>
+</section>
+
 {% endblock %}

@@ -1,40 +1,62 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card">
-    <h2>Search Face</h2>
-    <p class="subtitle">Upload an image to find matching faces</p>
+
+<section class="card card-lg">
+    <div class="card-header">
+        <h2>Search Face</h2>
+        <p class="subtitle">Upload an image to find matching faces</p>
+    </div>
 
     <form action="/ui/search" method="post" enctype="multipart/form-data" class="form">
-        <input type="file" name="file" accept="image/*" required onchange="previewImage(event)">
-        <button class="btn primary" type="submit">Search</button>
-    </form>
+        <div class="form-group">
+            <label>Select Image</label>
+            <input type="file" name="file" accept="image/*" required onchange="previewImage(event)">
+        </div>
 
-    <div id="preview-box" class="preview hidden">
-        <p>Search Image</p>
-        <img id="preview-img">
-    </div>
-</div>
+        <div id="preview-box" class="preview hidden">
+            <!-- <span class="preview-title">Search Image Preview</span> -->
+            <img id="preview-img">
+        </div>
+
+        <button class="btn primary btn-block" type="submit">
+            Search Faces
+        </button>
+    </form>
+</section>
 
 {% if results %}
-<h3 class="section-title">Matched Results</h3>
+<section class="results-section">
+    <h3 class="section-title">Matched Results</h3>
 
-{% for event, images in results.items() %}
-<div class="card">
-    <h4>Person / Event: {{ event }}</h4>
-
-    <div class="grid">
-        {% for img in images %}
-        <div class="image-card">
-            <img src="{{ img['image_url'] }}" alt="Matched face">
-            <span class="distance">
-                Distance: {{ "%.2f"|format(img["distance"]) }}
-            </span>
+    {% for event, images in results.items() %}
+    <div class="card">
+        <div class="card-header-sm">
+            <h4>Person / Event: <span class="event-id">{{ event }}</span></h4>
+            <span class="match-count">{{ images|length }} match(es)</span>
         </div>
-        {% endfor %}
+
+        <div class="grid">
+            {% for img in images %}
+            <div class="image-card result-card">
+                <img src="{{ img['image_url'] }}">
+                <div class="result-overlay">
+                    <span class="distance-badge">
+                        Similarity: {{ "%.2f"|format(img["distance"]) }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+    {% endfor %}
+</section>
+
+{% elif results is not none %}
+<div class="empty-state">
+    <h3>No Matches Found</h3>
+    <p>Try a clearer image or ensure the face exists.</p>
 </div>
-{% endfor %}
 {% endif %}
 
 <script>
@@ -45,4 +67,5 @@ function previewImage(event) {
     box.classList.remove("hidden");
 }
 </script>
+
 {% endblock %}

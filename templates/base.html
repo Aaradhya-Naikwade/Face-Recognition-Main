@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title or "Face Recognition System" }}</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>{{ title or "WebDesire | Face Recognition System" }}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/style.css?v=orange1">
+
 </head>
 <body>
 
-<!-- NAVBAR -->
 <header class="navbar">
     <div class="nav-left">
-        🧠 FaceRec
+        <img src="/static/logo.png" alt="WebDesire Logo" class="logo">
+        <span class="brand-name">WebDesire</span>
     </div>
+
     <nav class="nav-right">
         <a href="/">Home</a>
         <a href="/ui/add-face">Add Face</a>
@@ -19,14 +24,12 @@
     </nav>
 </header>
 
-<!-- MAIN CONTENT -->
 <main class="container">
     {% block content %}{% endblock %}
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
-    Face Recognition Demo · Python + FastAPI
+    © 2026 WebDesire • Face Recognition System
 </footer>
 
 </body>
