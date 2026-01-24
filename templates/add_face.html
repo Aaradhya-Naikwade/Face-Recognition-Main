@@ -10,9 +10,9 @@
 
     <form action="/ui/add-face" method="post" enctype="multipart/form-data" class="form">
         <div class="form-group">
-            <label>Person / Event ID</label>
-            <input type="text" name="event_id" placeholder="e.g. john_doe" required>
-            <small class="help-text">Use same ID to group images</small>
+            <label>Event Name</label>
+            <input type="text" name="event_id" placeholder="eg. wedding" required>
+            <small class="help-text">Use same name to group images</small>
         </div>
 
         <div class="form-group">
@@ -21,12 +21,12 @@
         </div>
 
         <div id="preview-box" class="preview hidden">
-            <span class="preview-title">Image Preview</span>
+            <!-- <span class="preview-title">Image Preview</span> -->
             <img id="preview-img">
         </div>
 
         <button class="btn primary btn-block" type="submit">
-            Upload & Detect Faces
+            Upload Image
         </button>
     </form>
 </section>
