@@ -35,6 +35,11 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+.insightface/
+models/
+*.onnx
+*.zip
+
 
 # Unit test / coverage reports
 htmlcov/
