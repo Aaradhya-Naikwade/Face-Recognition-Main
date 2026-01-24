@@ -7,7 +7,7 @@ from typing import List
 # ----------------------------
 # CONFIG
 # ----------------------------
-MODEL_NAME = "buffalo_l"
+MODEL_NAME = "buffalo_s"
 PROVIDERS = ["CPUExecutionProvider"]  # change to CUDAExecutionProvider if GPU
 
 # ----------------------------
