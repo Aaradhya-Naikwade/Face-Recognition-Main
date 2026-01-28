@@ -25,6 +25,13 @@
     </form>
 </section>
 
+{% if error %}
+<div class="empty-state">
+    <h3 style="color: red;">Error</h3>
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
 {% if results %}
 <section class="results-section">
     <h3 class="section-title">Matched Results</h3>
@@ -42,7 +49,7 @@
                 <img src="{{ img['image_url'] }}">
                 <div class="result-overlay">
                     <span class="distance-badge">
-                        Similarity: {{ "%.2f"|format(img["distance"]) }}
+                        Similarity: {{ "%.2f"|format(img.get("similarity", 0)) }}
                     </span>
                 </div>
             </div>
@@ -64,7 +71,7 @@ function previewImage(event) {
     const img = document.getElementById("preview-img");
     const box = document.getElementById("preview-box");
     img.src = URL.createObjectURL(event.target.files[0]);
-    box.classList.remove("hidden");
+    box.classList.remove("hidden"); 
 }
 </script>
 

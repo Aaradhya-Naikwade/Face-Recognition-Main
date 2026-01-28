@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import insightface
 from fastapi import HTTPException
-from typing import List
+from typing import List, Dict
 
 # ----------------------------
 # CONFIG
@@ -44,17 +44,35 @@ def decode_image(image_bytes: bytes) -> np.ndarray:
 # ----------------------------
 # FACE EMBEDDING EXTRACTION
 # ----------------------------
-def extract_face_embeddings(image: np.ndarray) -> List[np.ndarray]:
+def extract_face_data(image: np.ndarray) -> List[Dict]:
     """
-    Detect faces and return embeddings
+    Detect faces and return list of dict:
+    [
+      {
+        "embedding": np.ndarray (normalized),
+        "bbox": [x1, y1, x2, y2]
+      }
+    ]
     """
     faces = face_app.get(image)
-
     if not faces:
         return []
 
-    embeddings = []
+    results = []
     for face in faces:
-        embeddings.append(face.embedding)
+        emb = face.embedding.astype("float32")
 
-    return embeddings
+        # ✅ Normalize embedding (important for cosine similarity)
+        norm = np.linalg.norm(emb)
+        if norm == 0:
+            continue
+        emb = emb / norm
+
+        bbox = face.bbox.astype(int).tolist()  # [x1,y1,x2,y2]
+
+        results.append({
+            "embedding": emb,
+            "bbox": bbox
+        })
+
+    return results
