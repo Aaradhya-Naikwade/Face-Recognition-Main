@@ -223,7 +223,7 @@ def index_group_photo(req: IndexPhotoRequest):
         embedding_type="photo"
     )
     
-
+    
     return {"status": "ok"}
 
 
@@ -248,9 +248,9 @@ def find_matches(req: FindMatchesRequest):
     print("USER ID:", req.user_id)
 
     from faiss_index import metadata
-
+ 
     print("TOTAL METADATA:", len(metadata))
-
+    
     profile_count = 0
     photo_count = 0
 
